@@ -4,34 +4,28 @@ services:
   zipline:
     image: ghcr.io/diced/zipline
     environment:
-      - TRAEFIK_HOST=${TRAEFIK_HOST}
-      - WEBSITE_TITLE=${WEBSITE_TITLE}
-      - CORE_DATABASE_URL=${CORE_DATABASE_URL}
+      - WEBSITE_TITLE=CSSNR
+      - WEBSITE_EXTERNAL_LINKS=[{"label":"Uptime Kuma","link":"https://uptime.nj.hosted-domains.com/"},{"label":"PGAdmin","link":"https://pgadmin.hosted-domains.com/"},{"label":"Portainer","link":"https://portainer-o-us-east-1.hosted-domains.com/"},{"label":"Jenkins","link":"https://jenkins.hosted-domains.com/"},{"label":"Traefik","link":"https://traefik-o-us-east-1.hosted-domains.com/"},{"label":"Harbor","link":"https://harbor.hosted-domains.com/"}]
+      - CORE_PORT=3000
       - CORE_SECRET=${CORE_SECRET}
-      - CORE_PORT=${CORE_PORT}
+      - CORE_DATABASE_URL=${CORE_DATABASE_URL}
+      - FEATURES_OAUTH_REGISTRATION=true
+      - OAUTH_DISCORD_CLIENT_ID=${OAUTH_DISCORD_CLIENT_ID}
+      - OAUTH_DISCORD_CLIENT_SECRET=${OAUTH_DISCORD_CLIENT_SECRET}
     deploy:
       replicas: 1
       labels:
         - traefik.enable=true
         - traefik.docker.network=traefik-public
         - traefik.constraint-label=traefik-public
-        - traefik.http.routers.shane-zipline-http.rule=Host(`${TRAEFIK_HOST}`)
+        - traefik.http.routers.shane-zipline-http.rule=Host(`i.cssnr.com`)
         - traefik.http.routers.shane-zipline-http.entrypoints=http
         - traefik.http.routers.shane-zipline-http.middlewares=https-redirect
-        - traefik.http.routers.shane-zipline-https.rule=Host(`${TRAEFIK_HOST}`)
+        - traefik.http.routers.shane-zipline-https.rule=Host(`i.cssnr.com`)
         - traefik.http.routers.shane-zipline-https.entrypoints=https
         - traefik.http.routers.shane-zipline-https.tls=true
-        - traefik.http.services.shane-zipline-https.loadbalancer.server.port=${CORE_PORT}
+        - traefik.http.services.shane-zipline-https.loadbalancer.server.port=3000
     volumes:
       - /data/docker/shane-zipline:/zipline/uploads
-#    networks:
-#      - postgres
-#      - traefik-public
     ports:
       - "3000:3000"
-
-#networks:
-#  traefik-public:
-#    external: true
-#  postgres:
-#    external: true
