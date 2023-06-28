@@ -7,12 +7,13 @@ services:
       - WEBSITE_TITLE=CSSNR
       - WEBSITE_EXTERNAL_LINKS=[{"label":"Uptime Kuma","link":"https://uptime.nj.hosted-domains.com/"},{"label":"PGAdmin","link":"https://pgadmin.hosted-domains.com/"},{"label":"Portainer","link":"https://portainer-o-us-east-1.hosted-domains.com/"}]
       - CORE_PORT=3000
+      - CORE_RETURN_HTTPS=true
       - CORE_SECRET=${CORE_SECRET}
       - CORE_DATABASE_URL=${CORE_DATABASE_URL}
       - FEATURES_OAUTH_REGISTRATION=true
       - OAUTH_DISCORD_CLIENT_ID=${OAUTH_DISCORD_CLIENT_ID}
       - OAUTH_DISCORD_CLIENT_SECRET=${OAUTH_DISCORD_CLIENT_SECRET}
-      - CORE_RETURN_HTTPS=true
+      - DISCORD_URL=${DISCORD_URL}
     deploy:
       replicas: 1
       labels:
