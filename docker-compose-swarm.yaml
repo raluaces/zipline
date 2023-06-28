@@ -12,6 +12,7 @@ services:
       - FEATURES_OAUTH_REGISTRATION=true
       - OAUTH_DISCORD_CLIENT_ID=${OAUTH_DISCORD_CLIENT_ID}
       - OAUTH_DISCORD_CLIENT_SECRET=${OAUTH_DISCORD_CLIENT_SECRET}
+      - CORE_RETURN_HTTPS=true
     deploy:
       replicas: 1
       labels:
