@@ -6,6 +6,8 @@ services:
     environment:
       - WEBSITE_TITLE=CSSNR
       - WEBSITE_EXTERNAL_LINKS=[{"label":"Uptime Kuma","link":"https://uptime.nj.hosted-domains.com/"},{"label":"PGAdmin","link":"https://pgadmin.hosted-domains.com/"},{"label":"Portainer","link":"https://portainer-o-us-east-1.hosted-domains.com/"}]
+      - WEBSITE_SHOW_FILES_PER_USER=true
+      - UPLOADER_ADMIN_LIMIT=100mb
       - CORE_PORT=3000
       - CORE_RETURN_HTTPS=true
       - CORE_SECRET=${CORE_SECRET}
