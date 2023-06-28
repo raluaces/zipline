@@ -5,7 +5,7 @@ services:
     image: ghcr.io/diced/zipline
     environment:
       - WEBSITE_TITLE=CSSNR
-      - WEBSITE_EXTERNAL_LINKS=[{"label":"Uptime Kuma","link":"https://uptime.nj.hosted-domains.com/"},{"label":"PGAdmin","link":"https://pgadmin.hosted-domains.com/"},{"label":"Portainer","link":"https://portainer-o-us-east-1.hosted-domains.com/"},{"label":"Jenkins","link":"https://jenkins.hosted-domains.com/"},{"label":"Traefik","link":"https://traefik-o-us-east-1.hosted-domains.com/"},{"label":"Harbor","link":"https://harbor.hosted-domains.com/"}]
+      - WEBSITE_EXTERNAL_LINKS=[{"label":"Uptime Kuma","link":"https://uptime.nj.hosted-domains.com/"},{"label":"PGAdmin","link":"https://pgadmin.hosted-domains.com/"},{"label":"Portainer","link":"https://portainer-o-us-east-1.hosted-domains.com/"}]
       - CORE_PORT=3000
       - CORE_SECRET=${CORE_SECRET}
       - CORE_DATABASE_URL=${CORE_DATABASE_URL}
