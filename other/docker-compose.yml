@@ -1,0 +1,101 @@
+version: '3.7'
+
+services:
+  nginx:
+    image: nginx:alpine
+    environment:
+      - NGINX_HOST=intranet.cssnr.com
+      - NGINX_PORT=80
+    deploy:
+      replicas: 1
+#      labels:
+#        - traefik.enable=true
+#        - traefik.docker.network=traefik-public
+#        - traefik.constraint-label=traefik-public
+#        - traefik.http.routers.${SERVICE_NAME}-http.rule=Host(`${NGINX_HOST}`)
+#        - traefik.http.routers.${SERVICE_NAME}-http.entrypoints=http
+#        - traefik.http.routers.${SERVICE_NAME}-http.middlewares=https-redirect
+#        - traefik.http.routers.${SERVICE_NAME}-https.rule=Host(`${NGINX_HOST}`)
+#        - traefik.http.routers.${SERVICE_NAME}-https.entrypoints=https
+#        - traefik.http.routers.${SERVICE_NAME}-https.tls=true
+#        - traefik.http.services.${SERVICE_NAME}-https.loadbalancer.server.port=${NGINX_PORT}
+    volumes:
+      - files_dir:/usr/share/nginx/html:ro
+    ports:
+      - "80:80"
+
+#  nginx-proxy:
+#    image: nginxproxy/nginx-proxy
+#    ports:
+#      - "80:80"
+#    volumes:
+#      - /var/run/docker.sock:/tmp/docker.sock:ro
+
+  sftp:
+    image: atmoz/sftp:alpine
+    environment:
+      SERVICE_PORT: 2222
+      SFTP_USERS: shane:torrent1:1000
+    #      labels:
+    #        - traefik.enable=true
+    #        - traefik.docker.network=traefik-public
+    #        - traefik.constraint-label=traefik-public
+    #        - traefik.entrypoints.${SERVICE_NAME}-sftp.address=:${SERVICE_PORT}
+    #        - traefik.tcp.routers.${SERVICE_NAME}-sftp.entrypoints=${SERVICE_NAME}-sftp
+    #        - traefik.tcp.services.${SERVICE_NAME}-sftp.loadbalancer.server.port=22
+    volumes:
+      - ssh_dir:/etc/ssh
+      - files_dir:/home/shane
+    ports:
+      - "2222:22"
+
+  filebrowser:
+#    image: filebrowser/filebrowser
+    image: hurlenko/filebrowser
+    user: "1000:1000"
+    environment:
+      - VIRTUAL_HOST=intranet.cssnr.com
+      - VIRTUAL_PORT=8080
+      - VIRTUAL_PATH=/filebrowser
+      - FB_ADDRESS=0.0.0.0
+      - FB_PORT=8080
+      - FB_BASEURL=/filebrowser
+      - FB_USERNAME=shane
+      - FB_PASSWORD=torrent1
+      - FB_DATABASE=/config/filebrowser.db
+    restart: always
+    deploy:
+      replicas: 1
+#      labels:
+#        - traefik.enable=true
+#        - traefik.docker.network=traefik-public
+#        - traefik.constraint-label=traefik-public
+#        - traefik.http.routers.${SERVICE_NAME}-http.rule=Host(`${VIRTUAL_HOST}`)
+#        - traefik.http.routers.${SERVICE_NAME}-http.entrypoints=http
+#        - traefik.http.routers.${SERVICE_NAME}-http.middlewares=https-redirect
+#        - traefik.http.routers.${SERVICE_NAME}-https.rule=Host(`${NGINX_HOST}`)
+#        - traefik.http.routers.${SERVICE_NAME}-https.entrypoints=https
+#        - traefik.http.routers.${SERVICE_NAME}-https.tls=true
+#        - traefik.http.services.${SERVICE_NAME}-https.loadbalancer.server.port=${VIRTUAL_HOST}
+    volumes:
+      - files_dir:/data
+      - config_dir:/config
+    ports:
+      - "8222:8080"
+
+volumes:
+  files_dir:
+    driver_opts:
+      type: none
+      device: /data/docker/shane-sharex/files
+      o: bind
+  config_dir:
+    driver_opts:
+      type: none
+      device: /data/docker/shane-sharex/config
+      o: bind
+  ssh_dir:
+    driver_opts:
+      type: none
+      device: /data/docker/shane-sharex/ssh
+      o: bind

@@ -1,0 +1,37 @@
+version: '3.7'
+
+services:
+  zipline:
+    image: ghcr.io/diced/zipline
+    environment:
+      - TRAEFIK_HOST=${TRAEFIK_HOST}
+      - WEBSITE_TITLE=${WEBSITE_TITLE}
+      - CORE_DATABASE_URL=${CORE_DATABASE_URL}
+      - CORE_SECRET=${CORE_SECRET}
+      - CORE_PORT=${CORE_PORT}
+    deploy:
+      replicas: 1
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+        - traefik.http.routers.shane-zipline-http.rule=Host(`${TRAEFIK_HOST}`)
+        - traefik.http.routers.shane-zipline-http.entrypoints=http
+        - traefik.http.routers.shane-zipline-http.middlewares=https-redirect
+        - traefik.http.routers.shane-zipline-https.rule=Host(`${TRAEFIK_HOST}`)
+        - traefik.http.routers.shane-zipline-https.entrypoints=https
+        - traefik.http.routers.shane-zipline-https.tls=true
+        - traefik.http.services.shane-zipline-https.loadbalancer.server.port=${CORE_PORT}
+    volumes:
+      - /data/docker/shane-zipline:/zipline/uploads
+#    networks:
+#      - postgres
+#      - traefik-public
+    ports:
+      - "3000:3000"
+
+#networks:
+#  traefik-public:
+#    external: true
+#  postgres:
+#    external: true
