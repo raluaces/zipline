@@ -4,7 +4,7 @@ services:
   zipline:
     image: ghcr.io/diced/zipline
     environment:
-      - WEBSITE_TITLE='z.luac.es'
+      - WEBSITE_TITLE=z.luac.es File Share
       - WEBSITE_SHOW_FILES_PER_USER=true
       - UPLOADER_ADMIN_LIMIT=100mb
       - CORE_PORT=3000
