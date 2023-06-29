@@ -17,6 +17,10 @@ services:
       - OAUTH_DISCORD_CLIENT_SECRET=${OAUTH_DISCORD_CLIENT_SECRET}
       - DISCORD_URL=${DISCORD_URL}
     deploy:
+      resources:
+        limits:
+          cpu: 1
+          memory: 1024M
       replicas: 1
       labels:
         - traefik.enable=true
