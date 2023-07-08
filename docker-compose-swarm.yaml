@@ -28,10 +28,10 @@ services:
         - traefik.enable=true
         - traefik.docker.network=traefik-public
         - traefik.constraint-label=traefik-public
-        - traefik.http.routers.raluaces-zipline-http.rule=Host(`z.luac.es`)
+        - traefik.http.routers.raluaces-zipline-http.rule=Host(`z.luac.es`, `i.luac.es`)
         - traefik.http.routers.raluaces-zipline-http.entrypoints=http
         - traefik.http.routers.raluaces-zipline-http.middlewares=https-redirect
-        - traefik.http.routers.raluaces-zipline-https.rule=Host(`z.luac.es`)
+        - traefik.http.routers.raluaces-zipline-https.rule=Host(`z.luac.es`, `i.luac.es`)
         - traefik.http.routers.raluaces-zipline-https.entrypoints=https
         - traefik.http.routers.raluaces-zipline-https.tls=true
         - traefik.http.services.raluaces-zipline-https.loadbalancer.server.port=3000
